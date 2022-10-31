@@ -1,22 +1,3 @@
 <script>
-    export default {
-        directives: {
-            focus: {
-                mounted(el) {
-                    // this指向触发该指令的vm实例
-                    console.log(this)
-                    // 获取到el对象，执行focus方法获得焦点          
-                    el.focus()
-                }
-            }
-        },
-        onError(err) {
-            console.log(`error message=${err.message}, stack=${err.stack}`)
-        },
-        onPageNotFound(errorParams) {
-            console.log('error Param', errorParams);
-            const {uri = ''} = errorParams;
-            console.error('error uri', uri)
-        }
-    }
+//仅保留app.ux文件，但是请不要在此添加代码，卡片模式下不会加载app.ux
 </script>
