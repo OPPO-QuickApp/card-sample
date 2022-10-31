@@ -1,0 +1,41 @@
+<template>
+  <div class="doc-page">
+    <div class="page-title-wrap">
+      <text class="page-title">{{ componentName }}</text>
+      <text class="page-title">需要控制台查看</text>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      componentName: 'console',
+    }
+  },
+  onInit() {
+    console.log('log:我是log')
+    console.debug('debug:我是debug')
+    console.info('info:我是info')
+    console.warn('warn:我是warn')
+    console.error('error:我是error')
+  },
+}
+</script>
+
+<style>
+@import "../../../common.css";
+.item-container {
+  margin-bottom: 50px;
+  margin-right: 60px;
+  margin-left: 60px;
+  flex-direction: column;
+}
+.item-content {
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 30px;
+  margin-bottom: 50px;
+}
+</style>

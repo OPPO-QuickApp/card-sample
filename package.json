@@ -1,0 +1,27 @@
+{
+  "name": "sample",
+  "version": "1.9.0",
+  "description": "Quickapp Samples",
+  "scripts": {
+    "server": "hap server",
+    "debug": "hap debug",
+    "build": "hap build",
+    "release": "hap release",
+    "watch": "hap watch",
+    "start": "hap server --watch"
+  },
+  "devDependencies": {
+    "@types/quickapp": "git+http://litao@gm825.com:Abc123456@github.com/vivoquickapp/quickapp-types.git",
+    "catching": "^1.0.2",
+    "less": "^3.11.1",
+    "less-loader": "^4.1.0",
+    "qrcode-js": "0.0.2"
+  },
+  "dependencies": {
+    "hap-toolkit": "^1.9.0",
+    "hsl-to-hex": "^1.0.0"
+  },
+  "browserslist": [
+    "chrome 65"
+  ]
+}

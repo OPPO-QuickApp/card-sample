@@ -1,0 +1,56 @@
+<template>
+  <div class="doc-page">
+    <div class="page-title-wrap">
+      <text class="page-title">{{componentName}}</text>
+    </div>
+    
+    <text>dataset：{{textContent}}</text>
+    <div class="event-box">
+      <div class="e-item" show="{{toggleStatus}}"><text>show</text></div>
+      <div class="e-item" if="{{toggleStatus}}"><text>if</text></div>
+      <div class="e-item" id="elNode1" data-person-name="Jack"><text>data-person-name="Jack"</text></div>
+      <div class="e-item" for="{{(index, item) in forArr}}"><text>{{item}} --- {{index}}</text></div>
+    </div>
+    <input class="btn" type="button" value="toggle按钮控制show、if" @click="toggle" />
+    <input class="btn" type="button" disabled="{{true}}" value="disabled" />
+    <input class="btn" type="button" value="getDataset" @click="getDataset" />
+  </div>
+</template>
+
+<script>
+  import device from '@system.device'
+
+  export default {
+    data: {
+      componentName: 'attribute',
+      textContent: '未触发dataset：',
+      forArr: [9,5,2,3],
+      toggleStatus: true
+    },
+    onInit() {
+      // this.$page.setTitleBar({ text: '设备信息' })
+    },
+    toggle(){
+      this.toggleStatus = !this.toggleStatus
+    },
+    getDataset(){
+      const el = this.$element('elNode1')
+      this.textContent = el.dataset.personName + ':时间戳' + (Math.random() * 10 | 0)
+    }
+  }
+</script>
+
+<style>
+  @import '../../../common.css';
+  .event-box{
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0 50px;
+  }
+  .e-item{
+    margin-bottom: 20px;
+    width: 100%;
+    height: 100px;
+    background-color: #007dff;
+  }
+</style>

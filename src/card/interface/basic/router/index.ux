@@ -1,0 +1,44 @@
+<template>
+  <div class="doc-page">
+    <div class="page-title-wrap">
+      <text class="page-title">{{ componentName }}</text>
+    </div>
+    <div class="item-container">
+      <input type="button" class="btn" @click="routerHome" value="跳转到首页">
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router';
+import prompt from '@system.prompt'
+
+export default {
+  data() {
+    return {
+      componentName: 'app',
+    }
+  },
+  routerHome() {
+    router.push({
+        uri: "/"
+    })
+  },
+}
+</script>
+
+<style>
+@import "../../../common.css";
+.item-container {
+  margin-bottom: 50px;
+  margin-right: 60px;
+  margin-left: 60px;
+  flex-direction: column;
+}
+.item-content {
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 30px;
+  margin-bottom: 50px;
+}
+</style>

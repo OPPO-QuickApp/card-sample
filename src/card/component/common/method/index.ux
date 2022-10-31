@@ -1,0 +1,90 @@
+<template>
+  <div class="doc-page">
+    <div class="page-title-wrap">
+      <text class="page-title">{{componentName}}</text>
+    </div>
+    <div id="box1" class="box-normal">
+      <text>box1 focus</text>
+    </div>
+    
+    <text>result：{{textContent}}</text>
+    <input class="btn" type="button" value="getBoundingClientRect" @click="getBoundingClientRect" />
+    <input class="btn" type="button" value="toTempFilePath" @click="toTempFilePath" />
+    <input class="btn" type="button" value="focus" @click="setFocus" />
+    <input class="btn" type="button" value="clear-focus" @click="clearFocus" />
+    <text>toTempFilePath根据box1生成的图片</text>
+    <image class="create-image" src="{{targetPic}}"></image>
+  </div>
+</template>
+
+<script>
+  import device from '@system.device'
+
+  export default {
+    data: {
+      componentName: 'method',
+      textContent: '未触发事件：',
+      targetPic: ''
+    },
+    onInit() {
+      // this.$page.setTitleBar({ text: '设备信息' })
+    },
+    getBoundingClientRect(){
+      this.$element('box1').getBoundingClientRect({
+        success: (data) => {
+          this.textContent = JSON.stringify(data)
+        },
+        fail: (errorData, errorCode) => {
+          console.info('errorData')
+        },
+        complete: () => {
+          console.info('complete')
+        }
+      })
+    },
+    setFocus(){
+      this.$element('box1').focus();  // 聚焦效果
+    },
+    clearFocus(){
+      this.$element('box1').focus({focus:false});  // 失焦效果
+    },
+    toTempFilePath () {
+      this.$element('box1').toTempFilePath({
+        fileType: 'jpg',
+        quality: 1,
+        success: (res) => {
+          this.targetPic = res.tempFilePath
+        },
+        fail: (res, code) => {
+          console.info(`## toTempFilePath ## ${code}：${res}`)
+        }
+      })
+    }
+  }
+</script>
+
+<style>
+  @import '../../../common.css';
+  .event-box{
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0 50px;
+  }
+  .e-item{
+    margin-bottom: 20px;
+    width: 100%;
+    height: 100px;
+    background-color: #007dff;
+  }
+  #box1{
+    background-color: blueviolet;
+  }
+  #box1:focus{
+    background-color: red;
+  }
+  .create-image {
+    /* background-color: blue; */
+    width: 200px;
+    height: 200px;
+  }
+</style>

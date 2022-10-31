@@ -1,0 +1,132 @@
+<template>
+  <div class="doc-page">
+    <div class="page-title-wrap">
+      <text class="page-title">{{ componentName }}</text>
+    </div>
+
+    <div class="item-container">
+      <div class="item-content">
+        <text>检测应用是否存在: {{ status }}</text>
+      </div>
+      <input
+        type="button"
+        class="btn"
+        onclick="hasInstalled"
+        value="检测应用是否存在"
+      />
+    </div>
+
+    <div class="item-container">
+      <div class="item-content">
+        <text>安装应用: {{ packageName }}</text>
+      </div>
+      <input type="button" class="btn" onclick="install" value="安装应用" />
+    </div>
+
+    <div class="item-container">
+      <div class="item-content">
+        <text>应用版本号: {{ versionCode }}</text>
+        <text>应用版本名：{{ versionName }}</text>
+      </div>
+      <input type="button" class="btn" onclick="getInfo" value="应用信息" />
+      <div class="item-content">
+        <text>应用签名：</text>
+        <text for="signList">{{ $item }}</text>
+      </div>
+      <input type="button" class="btn" onclick="getSign" value="获取签名" />
+    </div>
+  </div>
+</template>
+
+<script>
+import pkg from '@system.package'
+import prompt from '@system.prompt'
+export default {
+  data: {
+    componentName: 'Package',
+    status: '',
+    // 以想看视频(原生安卓包名)为例
+    packageName: 'com.tencent.mm',
+    packageStatus: '',
+    versionName: '',
+    versionCode: '',
+    signList: ''
+  },
+  onInit() {
+  },
+  hasInstalled() {
+    const self = this
+    pkg.hasInstalled({
+      package: self.packageName,
+      success: function (data) {
+        self.status = data.result
+      },
+      fail: function (data, code) {
+        self.status = 'handling fail, code=' + code
+      }
+    })
+  },
+  install() {
+    const self = this
+    pkg.install({
+      package: self.packageName,
+      success: function (data) {
+        self.packageStatus = (data.result === true ? '安装成功' : '安装失败')
+      },
+      fail: function (err, code) {
+        self.packageStatus = 'handling fail, code=' + code
+      }
+    })
+  },
+  getInfo() {
+    const self = this
+    console.log(pkg.getInfo());
+    pkg.getInfo({
+      package: self.packageName,
+      success: function (data) {
+        self.versionName = data.versionName
+        self.versionCode = data.versionCode
+      },
+      fail: function (erromsg, errocode) {
+        prompt.showToast({
+          message: `${errocode}: ${erromsg}`
+        })
+      }
+    })
+  },
+  getSign() {
+    const self = this
+    pkg.getSignatureDigests({
+      package: self.packageName,
+      success: function (data) {
+        self.signList = data.signatureDigests
+      },
+      fail: function (erromsg, errocode) {
+        prompt.showToast({
+          message: `${errocode}: ${erromsg}`
+        })
+      }
+    })
+  }
+
+}
+</script>
+
+<style>
+@import "../../../common.css";
+
+.item-container {
+  margin-bottom: 50px;
+  margin-right: 60px;
+  margin-left: 60px;
+  flex-direction: column;
+}
+
+.item-content {
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 30px;
+  margin-bottom: 50px;
+  align-items: flex-start;
+}
+</style>

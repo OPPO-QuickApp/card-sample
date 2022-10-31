@@ -1,0 +1,284 @@
+<import name="demo-div" src="./component/container/div/index.ux"></import>
+<import name="demo-list" src="./component/container/list/index.ux"></import>
+<import name="demo-popup" src="./component/container/popup/index.ux"></import>
+<import name="demo-swiper" src="./component/container/swiper/index.ux"></import>
+<import name="demo-stack" src="./component/container/stack/index.ux"></import>
+
+<import name="demo-a" src="./component/basic/a/index.ux"></import>
+<import name="demo-image" src="./component/basic/image/index.ux"></import>
+<import name="demo-image-alt" src="./component/basic/image-alt/index.ux"></import>
+<import name="demo-image-filter" src="./component/basic/image-filter/index.ux"></import>
+<import name="demo-marquee" src="./component/basic/marquee/index.ux"></import>
+<import name="demo-progress" src="./component/basic/progress/index.ux"></import>
+<import name="demo-rating" src="./component/basic/rating/index.ux"></import>
+<import name="demo-span" src="./component/basic/span/index.ux"></import>
+<import name="demo-text" src="./component/basic/text/index.ux"></import>
+
+<import name="demo-input" src="./component/form/input/index.ux"></import>
+<import name="demo-label" src="./component/form/label/index.ux"></import>
+<import name="demo-multi-picker" src="./component/form/multi-picker/index.ux"></import>
+<import name="demo-picker" src="./component/form/picker/index.ux"></import>
+<import name="demo-select" src="./component/form/select/index.ux"></import>
+<import name="demo-slider" src="./component/form/slider/index.ux"></import>
+<import name="demo-switch" src="./component/form/switch/index.ux"></import>
+<import name="demo-textarea" src="./component/form/textarea/index.ux"></import>
+
+<import name="demo-video" src="./component/media/video/index.ux"></import>
+
+<import name="demo-event" src="./component/common/event/index.ux"></import>
+<import name="demo-attribute" src="./component/common/attribute/index.ux"></import>
+<import name="demo-method" src="./component/common/method/index.ux"></import>
+
+<import name="demo-animation" src="./component/style/animation/index.ux"></import>
+<import name="demo-animate-api" src="./component/style/animateApi/index.ux"></import>
+<import name="demo-animation-direction" src="./component/style/animation-direction/index.ux"></import>
+<import name="demo-transition" src="./component/style/transition/index.ux"></import>
+<import name="demo-transform" src="./component/style/transform/index.ux"></import>
+<import name="demo-translate" src="./component/style/translatepercent/index.ux"></import>
+<import name="demo-background-position" src="./component/style/background-position/index.ux"></import>
+<import name="demo-background-image" src="./component/style/background-image/index.ux"></import>
+<import name="demo-translatepercent" src="./component/style/translatepercent/index.ux"></import>
+<import name="demo-font" src="./component/style/font-family/index.ux"></import>
+<import name="demo-overflow" src="./component/style/overflow/index.ux"></import>
+<import name="demo-fetch" src="./interface/system/fetch/index.ux"></import>
+<import name="demo-storage" src="./interface/system/storage/index.ux"></import>
+<!-- 接口 -->
+<!-- 基础功能 -->
+<import name="demo-app" src="./interface/basic/app/index.ux"></import>
+<import name="demo-console" src="./interface/basic/console/index.ux"></import>
+<import name="demo-router" src="./interface/basic/router/index.ux"></import>
+
+<!-- 系统能力 -->
+<import name="demo-clipboard" src="./interface/system/clipboard/index.ux"></import>
+<import name="demo-geolocation" src="./interface/system/geolocation/index.ux"></import>
+<import name="demo-calendar" src="./interface/system/calendar/index.ux"></import>
+<import name="demo-network" src="./interface/system/network/index.ux"></import>
+<import name="demo-device" src="./interface/system/device/index.ux"></import>
+<import name="demo-battery" src="./interface/system/battery/index.ux"></import>
+<import name="demo-package" src="./interface/system/package/index.ux"></import>
+<import name="demo-cipher" src="./interface/system/cipher/index.ux"></import>
+<import name="demo-i18n" src="./interface/system/i18n/index.ux"></import>
+
+<!-- 厂商能力 -->
+<import name="demo-push" src="./interface/manufacturer/push/index.ux"></import>
+<import name="demo-account" src="./interface/manufacturer/account/index.ux"></import>
+
+
+<template>
+  <div class="doc-page">
+    <div class="header">
+      <text if="showComponent" @click="goBack">《返回</text>
+      <div class="title">
+        <text style="font-size:36px;color:#000;">{{ title }}</text>
+      </div>
+    </div>
+    <div if="!showComponent" style="flex-direction:column;">
+      <div class="tab">
+        <text
+          class="tab-text {{tabActive === index ? 'tab-active': ''}}"
+          for="{{(index, tab) in tabItemList}}"
+          @click="tabClick(tab, index)"
+          >{{ dataMap[tab].name }}</text
+        >
+      </div>
+      <div class="item-container" for="{{(index, group) in tabListData}}">
+        <div class="item-title">
+          <text class="item-title-detail" onclick="selectConFn(group, index)">{{
+            group.name
+          }}</text>
+        </div>
+        <div
+          class="item-content {{itemContainerActive === index ? 'selected-group': ''}}"
+        >
+          <block for="{{cate in group.caseList}}">
+            <div class="item-li" onclick="routePath(cate, {})">
+              <text class="item-li-detail">{{ cate.name }}</text>
+              <image class="item_arrow_img" src="arrow-right.png"></image>
+            </div>
+          </block>
+        </div>
+      </div>
+    </div>
+    <div class="content" style="margin-top: 70px;" else>
+      <!-- <demo-div></demo-div> -->
+      <component is="{{'demo-' + showComponent}}"></component>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+import { tabsData } from './data'
+
+export default {
+  /**
+   * @desc
+   * private内定义的属性不允许被覆盖
+   * protected内定义的属性，允许被应用内部页面请求传递的数据覆盖
+   * public内定义的属性允许被传入的数据覆盖
+   */
+  data: {
+    dataMap: tabsData,
+    selectedIdxMap: {},
+
+    history: false,
+    tabItemList: [],
+    tabActive: 0,
+    // tabActiveType: 'interface',
+    tabActiveType: 'component',
+    tabListData: {},
+
+
+    itemContainerActive: '',
+    showComponent: '',
+    title: '卡片demo',
+  },
+  onInit() {
+    // 初始化tabItemList
+    this.tabItemList = Object.keys(this.dataMap)
+    this.tabListData = this.dataMap[this.tabActiveType].groupList
+    console.log(this.tabListData)
+  },
+  selectConFn(tabItem, index) {
+    try {
+      console.log(3333, index)
+      if (this.itemContainerActive !== index) {
+        this.itemContainerActive = index
+        return
+      }
+      this.itemContainerActive = ''
+      console.log(tabItem, index)
+    } catch (error) {
+      console.log(error)
+    }
+
+    // this.selectedIdxMap[tabItem] = this.selectedIdxMap[tabItem] === index ? -1 : index
+  },
+  tabClick(tab, index) {
+    this.itemContainerActive = '' // 重置内容索引
+    this.tabActive = index
+    this.tabActiveType = tab
+    this.tabListData = this.dataMap[this.tabActiveType].groupList
+  },
+  routePath(cate, params) {
+    const { name, component } = cate
+    this.showComponent = component || name
+    this.title = `${component || name}-demo`
+  },
+  goBack() {
+    this.showComponent = ''
+    this.title = '卡片demo'
+  }
+}
+</script>
+
+<style>
+.doc-page {
+  background-color: #fbf9fe;
+  flex: 1;
+  flex-direction: column;
+}
+.header {
+  /* height: 60px; */
+  padding: 10px 20px;
+}
+.header .title {
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+}
+.tab {
+  /* flex: 1; */
+  /* flex-direction: column; */
+  border-bottom: 4px solid #ccc;
+}
+.tab text {
+  flex: 1;
+  padding: 10px;
+  background-color: #fff;
+  /* width: 30%; */
+}
+.footer-container {
+  height: 120px;
+  border-top-width: 1px;
+  border-color: #bbbbbb;
+  background-color: #ffffff;
+}
+.group-container {
+  flex: 1;
+  flex-direction: column;
+}
+.group-content {
+  flex-direction: column;
+  flex: 1;
+}
+.introduce {
+  padding-left: 80px;
+  padding-right: 80px;
+  margin-bottom: 80px;
+  margin-top: 60px;
+}
+.introduce-detail {
+  text-align: center;
+  flex: 1;
+  lines: 3;
+  line-height: 50px;
+  color: #888888;
+}
+.item-container {
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: #ffffff;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+.item-title-detail {
+  padding: 20px;
+  flex: 1;
+  color: #000000;
+}
+.item-title-detail:active {
+  background-color: #dfdfdf;
+}
+.item-content {
+  flex-direction: column;
+  padding: 0 10px 0;
+  display: none;
+}
+.item-li {
+  border-color: #bbbbbb;
+  border-bottom-width: 1px;
+  align-items: center;
+}
+.item-li:active {
+  background-color: #dfdfdf;
+}
+.item_arrow_img {
+  height: 40px;
+  width: 20px;
+  margin-right: 30px;
+  object-fit: contain;
+}
+.item-li-detail {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #000000;
+  flex: 1;
+}
+.tab-text {
+  text-align: center;
+}
+.tab-text:active {
+  color: #0faeff;
+}
+.selected-group {
+  display: flex;
+}
+.selected-text {
+  background-color: red;
+  color: #fff;
+}
+.tab-active {
+  color: #0faeff;
+}
+</style>

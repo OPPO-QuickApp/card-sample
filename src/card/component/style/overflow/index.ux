@@ -1,0 +1,136 @@
+<template>
+  <div class="doc-page">
+    <div class="page-title-wrap">
+      <text class="page-title">{{componentName}}</text>
+    </div>
+
+    <text>div多层嵌套</text>
+    <div overflow="visible">
+      <div class="item-container" overflow="visible" style="background-color:green">
+        <div class="item" overflow="visible" style="background-color:yellow"></div>
+      </div>
+    </div>
+
+    <text>div圆角overflow设为hidden</text>
+    <div overflow="hidden" style="border: 5px solid red;border-radius: 100%;width: 200px;height: 200px;background-color: #000;">
+      <!-- <div overflow="hidden" style="width: 300px;height: 300px;background-color: green;"></div> -->
+      <image src="./pic-240x160.webp" class="fixed-size-wh" overflow="hidden" style="object-fit: cover; padding: 20px;"></image>
+    </div>
+
+    <text>overflow设为visible</text>
+    <div>
+      <div class="item-container" overflow="visible">
+        <div class="item" overflow="visible"></div>
+      </div>
+    </div>
+
+    <text>overflow设为hidden</text>
+    <div>
+      <div class="item-container" overflow="hidden">
+        <div class="item" overflow="hidden"></div>
+      </div>
+    </div>
+
+    <text>img-container</text>
+    <div>
+      <div class="img-container" overflow="hidden">
+      </div>
+    </div>
+
+    <text>div内容圆角：overflow设为hidden</text>
+    <div>
+      <div class="img-container" overflow="hidden">
+        <div class="img-content" style="padding: 20px" overflow="hidden"></div>
+      </div>
+    </div>
+
+    <text>img内容圆角：overflow设为hidden</text>
+    <div>
+      <div class="item-content-with-height" overflow="hidden">
+        <image src="./pic-240x160.webp" class="fixed-size-wh" overflow="hidden" style="object-fit: cover"></image>
+      </div>
+    </div>
+
+    <!-- <stack class="item-container" overflow="visible" style="background-color:#325544;">
+      <text overflow="visible" style="width:400px;height:400px;background-color:yellow;"></text>
+    </stack>
+
+    <div>
+      <div class="item-container" overflow="hidden">
+        <image src="./pic-240x160.webp" style="width: 500px;height: 400px;" overflow="hidden" style="object-fit: cover"></image>
+      </div>
+    </div> -->
+
+
+
+  </div>
+</template>
+
+<script>
+  export default {
+    private: {
+      componentName: 'overflow'
+    }
+  }
+</script>
+
+<style>
+  @import '../../../common.css';
+
+
+  .item-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    border: 5px solid rgb(214, 23, 23);
+  }
+
+  .img-container {
+    margin-bottom: 50px;
+    margin-right: 60px;
+    margin-left: 60px;
+    flex-direction: column;
+    position: relative;
+    width: 300px;
+    height: 300px;
+    border-radius: 30px;
+    background-color: red;
+  }
+
+  .img-content {
+    width: 400px;
+    height: 400px;
+    left: 0;
+    top: 0;
+    background-color: aquamarine;
+  }
+
+  .item-content-with-height {
+    margin-bottom: 50px;
+    margin-right: 60px;
+    margin-left: 60px;
+
+    border-radius: 30px;
+    background-color: red;
+
+    width: 250px;
+    height: 250px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .fixed-size-wh {
+    width: 250px;
+    height: 250px;
+  }
+
+  .item {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 600px;
+    height: 600px;
+    background-color: aqua;
+  }
+
+</style>

@@ -1,0 +1,98 @@
+<template>
+  <div class="doc-page">
+    <div class="page-title-wrap">
+      <text class="page-title">{{ componentName }}</text>
+    </div>
+    <div class="item-container">
+      <div class="item-content">
+        <text>result:</text>
+        <text>{{ data }}</text>
+      </div>
+      <input type="button" class="btn" @click="subscribe" value="订阅push" />
+      <input type="button" class="btn" @click="ubsubscribe" value="取消订阅" />
+      <input type="button" class="btn" @click="ubsubscribe" value="push.on" />
+      <input type="button" class="btn" @click="ubsubscribe" value="push.off" />
+    </div>
+  </div>
+</template>
+  
+
+<script>
+import push from '@service.push'
+import prompt from '@system.prompt'
+export default {
+  data() {
+    return {
+      componentName: '推送',
+      data: ''
+    }
+
+  },
+  onInit() {
+  },
+  //　订阅push,一般可在应用初始化的地方进行调用。比如在 app 的 onCreate 方法中调用
+  subscribe() {
+    push.subscribe({
+      success: (data) => {
+        this.data = `success:${JSON.stringify(data)}`
+        console.log(
+          `push.subscribe succeeded, result data = ${JSON.stringify(data)}`
+        )
+      },
+      fail: (data, code) => {
+        this.data = `error:${JSON.stringify(data)},code:${code}`
+        console.log(
+          `push.subscribe failed, result data = ${JSON.stringify(
+            data
+          )}, code = ${code}`
+        )
+      },
+      complete: function () {
+        console.log('push.subscribe completed')
+
+      }
+    })
+  },
+  //　取消订阅
+  ubsubscribe() {
+    push.unsubscribe({
+      success: (data) => {
+        this.data = `success:${JSON.stringify(data)}`
+        console.log(
+          `push.unsubscribe succeeded, result data = ${JSON.stringify(data)}`
+        )
+      },
+      fail: (data, code) => {
+        this.data = `error:${JSON.stringify(data)},code:${code}`
+        console.log(
+          `push.unsubscribe failed, result data = ${JSON.stringify(
+            data
+          )}, code = ${code}`
+        )
+      },
+      complete: function () {
+        console.log('push.unsubscribe completed')
+      }
+    })
+  },
+  // 透传消息接收
+  passThrough() {
+    push.on({
+      callback: (ret) => {
+        this.data = `success:${JSON.stringify(ret)}`
+        console.log(`received pass through message, ret = ${JSON.stringify(ret)}`)
+      }
+    })
+  },
+  //　取消接受透传消息
+  offPassThrough() {
+    push.off()
+    this.data = `success`
+  }
+}
+</script>
+
+<style>
+@import "../../../common.css";
+</style>
+

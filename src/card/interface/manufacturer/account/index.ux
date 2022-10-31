@@ -1,0 +1,205 @@
+<template>
+  <div class="doc-page">
+    <div class="page-title-wrap">
+      <text class="page-title">{{ componentName }}</text>
+    </div>
+    <div class="item-container">
+      <div class="item-content">
+        <text>{{ data }}</text>
+      </div>
+      <input
+        type="button"
+        class="btn"
+        onclick="authorizeByCode"
+        value="进行OAuth授权(code模式 ) step1"
+      />
+      <input
+        type="button"
+        class="btn"
+        onclick="getTokenByCode"
+        value="获取token(code模式 ) step2"
+      />
+      <input
+        type="button"
+        class="btn"
+        onclick="getUserInfoByCode"
+        value="获取用户信息(code模式 ) step3"
+      />
+      <div
+        style="width:100%;height:1px;background-color:blue;margin-bottom:20px"
+      ></div>
+
+      <input
+        type="button"
+        class="btn"
+        onclick="authorizeByToken"
+        value="进行OAuth授权(token模式) step1"
+      />
+      <input
+        type="button"
+        class="btn"
+        onclick="getUserInfoByToken"
+        value="获取用户信息token模式 step2"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+import account from '@service.account'
+import fetch from '@system.fetch'
+import { hex_md5 } from './MD5.js'
+
+export default {
+  data: {
+    componentName: 'Account',
+    data: '',
+    code: '',
+    accessToken: ''
+  },
+  onInit() {
+    // this.$page.setTitleBar({ text: 'oppo账号服务' })
+  },
+  //授权
+  authorizeByCode() {
+    console.log(11111);
+    account.authorize({
+      type: 'code',
+      scope: '',
+      success: (data) => {
+        this.data = JSON.stringify(data)
+        const { code } = data
+        this.code = code
+        console.log(`handling success: ${JSON.stringify(data)}`)
+      },
+      fail: (data, code) => {
+        this.data = JSON.stringify(data)
+        console.log(`handling fail, data = ${data},code = ${code}`)
+      }
+    })
+    console.log(222222);
+  },
+  //获取token
+  getTokenByCode() {
+    console.log(this.code, 5555);
+    const baseUrl = "https://jits.open.oppomobile.com"
+    const appId = 'xxxxxxxxx'
+    const appSecret = 'xxxxxxxxx'
+    const code = this.code
+    const scope = 'openid'
+    const timestamp = new Date().getTime()
+
+    let signString = `code=${code}&scope=${scope}&timestamp=${timestamp}&appId=${appId}&appSecret=${appSecret}`
+    let sign = hex_md5(signString)
+
+    console.log(JSON.stringify({
+      appId,
+      code,
+      scope,
+      timestamp,
+      sign
+    }));
+
+    fetch.fetch({
+      url: baseUrl + '/jitsopen/api/oauth2/v1.1/token',//根据实际业务填写正确的地址
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        appId,
+        code,
+        scope,
+        timestamp,
+        sign
+      },
+      success: (ret) => {
+        const { data } = JSON.parse(ret.data)
+        this.data = JSON.parse(ret.data)
+        this.accessToken = data.accessToken
+        console.log(this.accessToken);
+      }
+    })
+  },
+  //获取userinfo
+  getUserInfoByCode() {
+    const baseUrl = "https://jits.open.oppomobile.com"
+    const appId = 'xxxxxxxxxx'
+    const appSecret = 'xxxxxxxxx'
+    const timestamp = new Date().getTime()
+    const signString = `token=${this.accessToken}&timestamp=${timestamp}&appId=${appId}&appSecret=${appSecret}`
+    const sign = hex_md5(signString)
+
+    console.log(JSON.stringify({
+      appId,
+      token: this.accessToken,
+      timestamp,
+      sign
+    }));
+
+    fetch.fetch({
+      url: baseUrl + '/jitsopen/api/oauth2/v1.0/userinfo',
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        appId,
+        token: this.accessToken,
+        timestamp,
+        sign
+      },
+      success: (ret) => {
+        console.log(JSON.stringify(ret.data), 66666666);
+
+        this.data = JSON.stringify(ret)
+      }
+    })
+  },
+  authorizeByToken() {
+    account.authorize({
+      type: 'token',
+      redirectUri: 'http://www.example.com/',
+      scope: '',
+      success: (data) => {
+        this.data = JSON.stringify(data)
+        this.accessToken = data.accessToken
+        console.log(`handling success: ${JSON.stringify(data)}`)
+      },
+      fail: (data, code) => {
+        this.data = JSON.stringify(data)
+        console.log(`handling fail, data = ${data},code = ${code}`)
+      }
+    })
+  },
+  getUserInfoByToken() {
+    account.getProfile({
+      token: this.accessToken,
+      success: (data) => {
+        console.log('handling success', JSON.stringify(data))
+        this.data = data.openid// JSON.stringify(data)
+      },
+      fail: (error, code) => {
+        this.data = JSON.stringify(error)
+        console.log('handling fail：', JSON.stringify(error), code)
+      }
+    })
+  },
+}
+</script>
+
+<style>
+@import "../../../common.css";
+.item-container {
+  margin-bottom: 50px;
+  margin-right: 60px;
+  margin-left: 60px;
+  flex-direction: column;
+}
+.item-content {
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 30px;
+  margin-bottom: 50px;
+}
+</style>

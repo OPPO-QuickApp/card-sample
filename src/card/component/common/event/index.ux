@@ -1,0 +1,48 @@
+<template>
+    <div class="doc-page">
+      <div class="page-title-wrap">
+        <text class="page-title">{{componentName}}</text>
+      </div>
+      
+      <text>当前事件类型：{{state}}</text>
+      <input class="btn" type="button" value="touchstart" ontouchstart="getEventType" />
+      <input class="btn" type="button" value="touchmove" ontouchmove="getEventType" />
+      <input class="btn" type="button" value="touchend" ontouchend="getEventType" />
+      <input class="btn" type="button" value="click" @click="getEventType" />
+      <input class="btn" type="button" value="longpress" onlongpress="getEventType" />
+      <input class="btn" style="width:{{divWidth}}" type="button" value="resize" onresize="getResize" @click="handle" />
+
+      <text>resize事件：{{textContent}}</text>
+    </div>
+  </template>
+  
+  <script>
+    import device from '@system.device'
+  
+    export default {
+      data: {
+        componentName: 'event',
+        state: '',
+        textContent: '未触发',
+        divWidth: '50%'
+      },
+      onInit() {
+        // this.$page.setTitleBar({ text: '设备信息' })
+      },
+      getEventType (event) {
+        this.state = event.type
+      },
+      getResize(e){
+        this.textContent = `修改宽度触发了resize...${Math.random()*100 | 0}`
+        console.log('触发了resize...')
+      },
+      handle(){
+        this.divWidth = `${Math.random()*10 + 80}%`
+
+      }
+    }
+  </script>
+  
+  <style>
+    @import '../../../common.css';
+  </style>
