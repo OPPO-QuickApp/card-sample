@@ -238,6 +238,11 @@ export const tabsData = {
             name: '数据存储 storage',
             component: 'storage',
             path: 'interface/system/storage'
+          },
+          {
+            name: '交换数据 exchange',
+            component: 'exchange',
+            path: 'interface/system/exchange'
           }
         ]
       },

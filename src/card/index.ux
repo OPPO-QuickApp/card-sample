@@ -42,6 +42,8 @@
 <import name="demo-overflow" src="./component/style/overflow/index.ux"></import>
 <import name="demo-fetch" src="./interface/system/fetch/index.ux"></import>
 <import name="demo-storage" src="./interface/system/storage/index.ux"></import>
+<import name="demo-exchange" src="./interface/system/exchange/index.ux"></import>
+
 <!-- 接口 -->
 <!-- 基础功能 -->
 <import name="demo-app" src="./interface/basic/app/index.ux"></import>
