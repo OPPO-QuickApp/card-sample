@@ -269,6 +269,11 @@
     }
   ],
   "config": {
+    "container": {
+      "rule": "4*X",
+      "margin": 25,
+      "borderRadius": 40
+    },
     "logLevel": "debug",
     "data": {
       "back": "false"
@@ -409,11 +414,6 @@
     "titleBarBackgroundColor": "#0faeff",
     "titleBarTextColor": "#ffffff",
     "themeMode": -1,
-    "container": {
-      "rule": "4*X",
-      "margin": 25,
-      "borderRadius": 40
-    },
     "windowSoftInputMode": "adjustResize"
   },
   "trustedSslDomains": [
